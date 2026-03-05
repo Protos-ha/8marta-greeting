@@ -1,36 +1,117 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const gameArea = document.getElementById('game-area');
-    const scoreDisplay = document.getElementById('score');
+    const setupScreen = document.getElementById('setup-screen');
     const gameScreen = document.getElementById('game-screen');
     const congratsScreen = document.getElementById('congratulations-screen');
     
+    const setupRecipientName = document.getElementById('recipientName');
+    const setupSenderName = document.getElementById('senderName');
+    const setupCustomMessage = document.getElementById('customMessage');
+    const generateLinkBtn = document.getElementById('generateLinkBtn');
+    const linkOutput = document.getElementById('linkOutput');
+    
+    const gameRecipientTitle = document.getElementById('gameRecipientTitle');
+    const finalGreeting = document.getElementById('finalGreeting');
+    const finalMessage = document.getElementById('finalMessage');
+    const finalSender = document.getElementById('finalSender');
+    const shareLinkEl = document.getElementById('shareLink');
+
     const TARGET_SCORE = 8;
     let currentScore = 0;
-    let dropInterval = 1000; // Интервал начала падения (1 секунда)
+    let dropInterval = 1000;
     let gameTimer;
 
     const heartEmoji = '❤️';
     const flowerEmoji = '🌸';
     
-    // Инициализация
-    updateScoreDisplay();
-    startGame();
+    // --- ЧАСТЬ 1: ПРОВЕРКА URL И НАСТРОЙКА ---
 
-    function updateScoreDisplay() {
-        scoreDisplay.textContent = `${currentScore} / ${TARGET_SCORE}`;
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipient = urlParams.get('recipient');
+    const sender = urlParams.get('sender');
+    const customMsgParam = urlParams.get('msg');
+
+    if (recipient && sender) {
+        // Параметры найдены - запускаем игру
+        setupScreen.classList.add('hidden');
+        gameScreen.classList.remove('hidden');
+        initializeGame(recipient, sender, customMsgParam);
+    } else {
+        // Параметров нет - показываем форму настройки
+        setupScreen.classList.remove('hidden');
+        gameScreen.classList.add('hidden');
+        congratsScreen.classList.add('hidden');
+        
+        generateLinkBtn.addEventListener('click', generateLink);
+    }
+
+    function generateLink() {
+        const recName = setupRecipientName.value.trim();
+        const sendName = setupSenderName.value.trim();
+        const customMsg = setupCustomMessage.value.trim();
+
+        if (!recName || !sendName) {
+            alert("Пожалуйста, введите имя получателя и ваше имя!");
+            return;
+        }
+
+        // Кодируем данные для URL
+        const encodedRecipient = encodeURIComponent(recName);
+        const encodedSender = encodeURIComponent(sendName);
+        const encodedMsg = encodeURIComponent(customMsg);
+        
+        // Формируем URL. ВАЖНО: Используем location.origin, чтобы ссылка была абсолютной
+        const baseUrl = window.location.origin + window.location.pathname;
+        let link = `${baseUrl}?recipient=${encodedRecipient}&sender=${encodedSender}`;
+        
+        if (customMsg) {
+            link += `&msg=${encodedMsg}`;
+        }
+
+        // Выводим ссылку и делаем ее кликабельной
+        linkOutput.textContent = link;
+        linkOutput.classList.remove('hidden');
+        
+        shareLinkEl.href = link;
+        shareLinkEl.textContent = link;
+        
+        // Чтобы сразу перейти к игре, нужно просто обновить URL в браузере или кликнуть по ссылке
+        // Для простоты, просто показываем ссылку для копирования
+        alert("Ссылка сгенерирована! Скопируйте ее и отправьте получателю.");
+    }
+
+
+    // --- ЧАСТЬ 2: ИГРОВАЯ ЛОГИКА ---
+
+    function initializeGame(recName, sendName, msgParam) {
+        // Обновляем заголовки
+        gameRecipientTitle.textContent = `для ${recName}`;
+        
+        // Устанавливаем финальный текст
+        const finalMsgText = msgParam && msgParam.length > 0 ? msgParam : "С праздником весны! Желаю тебе счастья, здоровья и только ярких дней. Ты — самая лучшая! 🌸";
+        finalMessage.textContent = finalMsgText;
+        finalSender.textContent = sendName;
+        finalGreeting.innerHTML = `С Днём 8 Марта, ${recName}!`;
+        
+        // Устанавливаем ссылку для шаринга на конечном экране
+        shareLinkEl.href = window.location.href;
+        shareLinkEl.textContent = window.location.href;
+
+        startGame();
     }
 
     function startGame() {
-        // Очищаем старые элементы, если они есть
+        const gameArea = document.getElementById('game-area');
+        const scoreDisplay = document.getElementById('score');
+        
         gameArea.innerHTML = '';
         currentScore = 0;
-        updateScoreDisplay();
+        updateScoreDisplay(scoreDisplay);
         
-        // Запускаем цикл генерации объектов
         gameTimer = setInterval(createFallingItem, dropInterval);
-        
-        // Если нужно, чтобы объекты падали чаще по мере набора очков, можно уменьшать interval
-        // dropInterval = Math.max(300, 1000 - currentScore * 50);
+    }
+
+    function updateScoreDisplay(displayElement) {
+        displayElement.textContent = `${currentScore} / ${TARGET_SCORE}`;
     }
 
     function createFallingItem() {
@@ -41,41 +122,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const item = document.createElement('div');
         
-        // Случайно выбираем, что будет падать
-        const isHeart = Math.random() < 0.8; // 80% шанс, что это будет сердечко
+        const isHeart = Math.random() < 0.8;
         
         item.textContent = isHeart ? heartEmoji : flowerEmoji;
         item.classList.add('falling-item');
         
-        // Устанавливаем начальные стили
-        const startX = Math.random() * (gameArea.clientWidth - 50); // Начальная позиция по горизонтали
+        const startX = Math.random() * (gameArea.clientWidth - 50);
         item.style.left = `${startX}px`;
-        item.style.top = `-50px`; // Начинаем выше области видимости
-        item.dataset.caught = 'false'; // Флаг, поймано ли сердце
+        item.style.top = `-50px`; 
+        item.dataset.caught = 'false';
 
-        // Устанавливаем анимацию (продолжительность падения зависит от высоты)
-        const fallDuration = 4 + Math.random() * 3; // Падение от 4 до 7 секунд
+        const fallDuration = 4 + Math.random() * 3;
         item.style.animation = `fall ${fallDuration}s linear forwards`;
 
         gameArea.appendChild(item);
 
-        // 1. Обработка клика (попытка поймать)
+        // Обработка клика
         item.addEventListener('click', () => {
             if (isHeart && item.dataset.caught === 'false') {
                 catchItem(item);
             } else if (!isHeart) {
-                // Если это цветок, он просто исчезает, ничего не засчитывая
                 item.remove();
             }
         });
 
-        // 2. Проверка, долетел ли объект до низа
+        // Проверка, долетел ли объект
         item.addEventListener('animationend', () => {
             if (item.dataset.caught === 'false') {
-                // Если объект долетел до низа и не был пойман (и это было сердце)
-                if (isHeart) {
-                    // Можно добавить штраф или просто ничего не делать
-                }
                 item.remove();
             }
         });
@@ -86,14 +159,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         itemElement.dataset.caught = 'true';
         currentScore++;
-        updateScoreDisplay();
+        updateScoreDisplay(document.getElementById('score'));
 
-        // Визуальное подтверждение поимки
         itemElement.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
         itemElement.style.transform = 'scale(1.5)';
         itemElement.style.opacity = '0';
         
-        // Удаляем элемент через короткое время
         setTimeout(() => {
             itemElement.remove();
             checkWinCondition();
@@ -104,11 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentScore >= TARGET_SCORE) {
             clearInterval(gameTimer);
             
-            // Скрываем игру и показываем поздравление
             gameScreen.classList.add('hidden');
             congratsScreen.classList.remove('hidden');
-            
-            // Добавляем финальный "взрыв" элементов на экране поздравления (опционально)
         }
     }
 });
