@@ -8,24 +8,33 @@
 </head>
 <body>
 
-    <!-- Секция настройки (Видна только при первом открытии или для настройки) -->
+    <!-- Секция настройки (Видна по умолчанию, пока не будут определены параметры URL) -->
     <div id="setup-screen">
         <h1>Настройка поздравления</h1>
-        <label for="recipientName">Имя получателя (например, Маша):</label>
-        <input type="text" id="recipientName" value="Маша">
+        
+        <div class="input-group">
+            <label for="recipientName">Имя получателя (например, Маша):</label>
+            <input type="text" id="recipientName" value="Маша">
+        </div>
 
-        <label for="senderName">Ваше имя (отправитель):</label>
-        <input type="text" id="senderName" value="Дима">
+        <div class="input-group">
+            <label for="senderName">Ваше имя (отправитель):</label>
+            <input type="text" id="senderName" value="Дима">
+        </div>
 
-        <label for="customMessage">Основное поздравление (оставить пустым для стандартного):</label>
-        <textarea id="customMessage" rows="3"></textarea>
+        <div class="input-group">
+            <label for="customMessage">Основное поздравление (оставить пустым для стандартного):</label>
+            <textarea id="customMessage" rows="3"></textarea>
+        </div>
         
         <button id="generateLinkBtn">Сгенерировать ссылку</button>
         
-        <p id="linkOutput" class="hidden"></p>
+        <p id="linkOutput" class="hidden">
+            Ваша ссылка: <a id="shareLink" href="#" target="_blank"></a>
+        </p>
     </div>
 
-    <!-- Первый экран: Игра (Изначально скрыт, пока не определены имена) -->
+    <!-- Первый экран: Игра (Скрыт до тех пор, пока не будут найдены параметры в URL) -->
     <div id="game-screen" class="hidden">
         <h1>Поймай 8 сердечек ❤️</h1>
         <h2 id="gameRecipientTitle">для [Имя]</h2>
@@ -38,7 +47,7 @@
         </div>
     </div>
 
-    <!-- Второй экран: Поздравление -->
+    <!-- Второй экран: Поздравление (Скрыт, пока игра не пройдена) -->
     <div id="congratulations-screen" class="hidden">
         <div class="flower-bouquet">
             💐
@@ -51,7 +60,7 @@
             🎉 Ты поймала все 8 сердечек! 🎉
         </div>
         <div id="shareLinkContainer" style="margin-top: 20px;">
-            Поделись этой игрой: <a id="shareLink" href="#" target="_blank">Ссылка</a>
+            Поделись этой игрой: <a id="shareLinkFinal" href="#" target="_blank">Ссылка</a>
         </div>
     </div>
 
