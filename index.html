@@ -8,32 +8,50 @@
 </head>
 <body>
 
-    <!-- Первый экран: Игра -->
-    <div id="game-screen">
+    <!-- Секция настройки (Видна только при первом открытии или для настройки) -->
+    <div id="setup-screen">
+        <h1>Настройка поздравления</h1>
+        <label for="recipientName">Имя получателя (например, Маша):</label>
+        <input type="text" id="recipientName" value="Маша">
+
+        <label for="senderName">Ваше имя (отправитель):</label>
+        <input type="text" id="senderName" value="Дима">
+
+        <label for="customMessage">Основное поздравление (оставить пустым для стандартного):</label>
+        <textarea id="customMessage" rows="3"></textarea>
+        
+        <button id="generateLinkBtn">Сгенерировать ссылку</button>
+        
+        <p id="linkOutput" class="hidden"></p>
+    </div>
+
+    <!-- Первый экран: Игра (Изначально скрыт, пока не определены имена) -->
+    <div id="game-screen" class="hidden">
         <h1>Поймай 8 сердечек ❤️</h1>
-        <h2>для Маши</h2>
+        <h2 id="gameRecipientTitle">для [Имя]</h2>
         
         <div class="counter-container">
             <div id="score">0 / 8</div>
         </div>
         
-        <!-- Зона, где будут падать сердечки -->
         <div id="game-area">
-            <!-- Сердечки будут добавлены сюда скриптом -->
         </div>
     </div>
 
-    <!-- Второй экран: Поздравление (Изначально скрыт) -->
+    <!-- Второй экран: Поздравление -->
     <div id="congratulations-screen" class="hidden">
         <div class="flower-bouquet">
             💐
         </div>
-        <h1>С Днём 8 Марта, <span id="name-placeholder">Маша</span>!</h1>
-        <p>С праздником весны! Желаю тебе счастья, здоровья и только ярких дней. Ты — самая лучшая! 🌸</p>
-        <p class="signature">— Дима</p>
+        <h1 id="finalGreeting">С Днём 8 Марта, [Имя]!</h1>
+        <p id="finalMessage">С праздником весны! Желаю тебе счастья, здоровья и только ярких дней. Ты — самая лучшая! 🌸</p>
+        <p class="signature">— <span id="finalSender">Дима</span></p>
         
         <div class="final-message">
             🎉 Ты поймала все 8 сердечек! 🎉
+        </div>
+        <div id="shareLinkContainer" style="margin-top: 20px;">
+            Поделись этой игрой: <a id="shareLink" href="#" target="_blank">Ссылка</a>
         </div>
     </div>
 
