@@ -1,53 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Элементы управления
+    // ... (Объявление переменных остается прежним) ...
     const setupScreen = document.getElementById('setup-screen');
     const gameScreen = document.getElementById('game-screen');
     const congratsScreen = document.getElementById('congratulations-screen');
     
-    // Элементы настройки
-    const setupRecipientName = document.getElementById('recipientName');
-    const setupSenderName = document.getElementById('senderName');
-    const setupCustomMessage = document.getElementById('customMessage');
-    const generateLinkBtn = document.getElementById('generateLinkBtn');
-    const linkOutput = document.getElementById('linkOutput');
+    // ... (Остальные переменные остаются прежними) ...
     
-    // Элементы игры и поздравления
-    const gameRecipientTitle = document.getElementById('gameRecipientTitle');
-    const finalGreeting = document.getElementById('finalGreeting');
-    const finalMessage = document.getElementById('finalMessage');
-    const finalSender = document.getElementById('finalSender');
-    const shareLinkEl = document.getElementById('shareLinkFinal'); // Исправлено: использовал другой ID для финальной ссылки
-
-    const TARGET_SCORE = 8;
-    let currentScore = 0;
-    let dropInterval = 1000;
-    let gameTimer;
-
-    const heartEmoji = '❤️';
-    const flowerEmoji = '🌸';
-    
-    // --- ЧАСТЬ 1: ПРОВЕРКА URL И НАСТРОЙКА ---
-
     const urlParams = new URLSearchParams(window.location.search);
     const recipient = urlParams.get('recipient');
     const sender = urlParams.get('sender');
     const customMsgParam = urlParams.get('msg');
 
+    // --- ИСПРАВЛЕННАЯ ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ ---
     if (recipient && sender) {
-        // Параметры найдены (ссылка уже была открыта) - запускаем игру
-        setupScreen.classList.add('hidden');
-        gameScreen.classList.remove('hidden');
+        // Параметры найдены - запускаем игру
+        setupScreen.classList.add('hidden'); // СКРЫВАЕМ НАСТРОЙКИ
+        congratsScreen.classList.add('hidden'); // СКРЫВАЕМ ПОЗДРАВЛЕНИЕ (если оно было)
+        gameScreen.classList.remove('hidden'); // ПОКАЗЫВАЕМ ИГРУ
         initializeGame(recipient, sender, customMsgParam);
     } else {
-        // Параметров нет (первый запуск) - показываем форму настройки
-        setupScreen.classList.remove('hidden');
-        gameScreen.classList.add('hidden');
+        // Параметров нет (первый запуск или чистая ссылка) - показываем форму настройки
+        setupScreen.classList.remove('hidden'); // ПОКАЗЫВАЕМ НАСТРОЙКИ
+        gameScreen.classList.add('hidden');    // СКРЫВАЕМ ИГРУ
         congratsScreen.classList.add('hidden');
         
         generateLinkBtn.addEventListener('click', generateLink);
     }
 
+    // --- ОСТАЛЬНЫЕ ФУНКЦИИ (generateLink, initializeGame, startGame и т.д.) остаются БЕЗ ИЗМЕНЕНИЙ ---
+
     function generateLink() {
+        // ... (Код генерации ссылки остается прежним) ...
         const recName = setupRecipientName.value.trim();
         const sendName = setupSenderName.value.trim();
         const customMsg = setupCustomMessage.value.trim();
@@ -61,28 +44,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const encodedSender = encodeURIComponent(sendName);
         const encodedMsg = encodeURIComponent(customMsg);
         
-        // Получаем базовый URL БЕЗ параметров, чтобы правильно построить новый
         const baseUrl = window.location.origin + window.location.pathname;
         let link = `${baseUrl}?recipient=${encodedRecipient}&sender=${encodedSender}`;
         
         if (customMsg) {
             link += `&msg=${encodedMsg}`;
         }
-
-        // Выводим ссылку и делаем ее кликабельной
+        
+        // ВЫВОДИМ ССЫЛКУ ДЛЯ КОПИРОВАНИЯ
         linkOutput.classList.remove('hidden');
-        shareLinkEl.href = link; // Ссылка для копирования
-        shareLinkEl.textContent = link;
-        
-        // Устанавливаем ссылку для шаринга на конечном экране (чтобы она вела на эту же страницу с параметрами)
         shareLinkEl.href = link; 
-        
-        // Автоматически перенаправляем на игру с параметрами, чтобы сразу проверить
+        shareLinkEl.textContent = link;
+
+        // ПЕРЕНАПРАВЛЯЕМ НА ИГРУ С ПАРАМЕТРАМИ
+        // Это необходимо, чтобы сразу перейти к игровому экрану с заданными именами
         window.location.href = link;
     }
-
-
-    // --- ЧАСТЬ 2: ИГРОВАЯ ЛОГИКА ---
+    
+    // ... (Остальной код initializeGame, startGame, createFallingItem, catchItem, checkWinCondition) ...
 
     function initializeGame(recName, sendName, msgParam) {
         // Обновляем заголовки
