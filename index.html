@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поздравление для Маши!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Первый экран: Игра -->
+    <div id="game-screen">
+        <h1>Поймай 8 сердечек ❤️</h1>
+        <h2>для Маши</h2>
+        
+        <div class="counter-container">
+            <div id="score">0 / 8</div>
+        </div>
+        
+        <!-- Зона, где будут падать сердечки -->
+        <div id="game-area">
+            <!-- Сердечки будут добавлены сюда скриптом -->
+        </div>
+    </div>
+
+    <!-- Второй экран: Поздравление (Изначально скрыт) -->
+    <div id="congratulations-screen" class="hidden">
+        <div class="flower-bouquet">
+            💐
+        </div>
+        <h1>С Днём 8 Марта, <span id="name-placeholder">Маша</span>!</h1>
+        <p>С праздником весны! Желаю тебе счастья, здоровья и только ярких дней. Ты — самая лучшая! 🌸</p>
+        <p class="signature">— Дима</p>
+        
+        <div class="final-message">
+            🎉 Ты поймала все 8 сердечек! 🎉
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
