@@ -1,19 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Элементы управления
     const setupScreen = document.getElementById('setup-screen');
     const gameScreen = document.getElementById('game-screen');
     const congratsScreen = document.getElementById('congratulations-screen');
     
+    // Элементы настройки
     const setupRecipientName = document.getElementById('recipientName');
     const setupSenderName = document.getElementById('senderName');
     const setupCustomMessage = document.getElementById('customMessage');
     const generateLinkBtn = document.getElementById('generateLinkBtn');
     const linkOutput = document.getElementById('linkOutput');
     
+    // Элементы игры и поздравления
     const gameRecipientTitle = document.getElementById('gameRecipientTitle');
     const finalGreeting = document.getElementById('finalGreeting');
     const finalMessage = document.getElementById('finalMessage');
     const finalSender = document.getElementById('finalSender');
-    const shareLinkEl = document.getElementById('shareLink');
+    const shareLinkEl = document.getElementById('shareLinkFinal'); // Исправлено: использовал другой ID для финальной ссылки
 
     const TARGET_SCORE = 8;
     let currentScore = 0;
@@ -31,12 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const customMsgParam = urlParams.get('msg');
 
     if (recipient && sender) {
-        // Параметры найдены - запускаем игру
+        // Параметры найдены (ссылка уже была открыта) - запускаем игру
         setupScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
         initializeGame(recipient, sender, customMsgParam);
     } else {
-        // Параметров нет - показываем форму настройки
+        // Параметров нет (первый запуск) - показываем форму настройки
         setupScreen.classList.remove('hidden');
         gameScreen.classList.add('hidden');
         congratsScreen.classList.add('hidden');
@@ -54,12 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Кодируем данные для URL
         const encodedRecipient = encodeURIComponent(recName);
         const encodedSender = encodeURIComponent(sendName);
         const encodedMsg = encodeURIComponent(customMsg);
         
-        // Формируем URL. ВАЖНО: Используем location.origin, чтобы ссылка была абсолютной
+        // Получаем базовый URL БЕЗ параметров, чтобы правильно построить новый
         const baseUrl = window.location.origin + window.location.pathname;
         let link = `${baseUrl}?recipient=${encodedRecipient}&sender=${encodedSender}`;
         
@@ -68,15 +70,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Выводим ссылку и делаем ее кликабельной
-        linkOutput.textContent = link;
         linkOutput.classList.remove('hidden');
-        
-        shareLinkEl.href = link;
+        shareLinkEl.href = link; // Ссылка для копирования
         shareLinkEl.textContent = link;
         
-        // Чтобы сразу перейти к игре, нужно просто обновить URL в браузере или кликнуть по ссылке
-        // Для простоты, просто показываем ссылку для копирования
-        alert("Ссылка сгенерирована! Скопируйте ее и отправьте получателю.");
+        // Устанавливаем ссылку для шаринга на конечном экране (чтобы она вела на эту же страницу с параметрами)
+        shareLinkEl.href = link; 
+        
+        // Автоматически перенаправляем на игру с параметрами, чтобы сразу проверить
+        window.location.href = link;
     }
 
 
