@@ -1,36 +1,56 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ... (Объявление переменных остается прежним) ...
+    // Элементы управления
     const setupScreen = document.getElementById('setup-screen');
     const gameScreen = document.getElementById('game-screen');
     const congratsScreen = document.getElementById('congratulations-screen');
     
-    // ... (Остальные переменные остаются прежними) ...
+    // Элементы настройки
+    const setupRecipientName = document.getElementById('recipientName');
+    const setupSenderName = document.getElementById('senderName');
+    const setupCustomMessage = document.getElementById('customMessage');
+    const generateLinkBtn = document.getElementById('generateLinkBtn');
+    const linkOutput = document.getElementById('linkOutput');
     
+    // Элементы игры и поздравления
+    const gameRecipientTitle = document.getElementById('gameRecipientTitle');
+    const finalGreeting = document.getElementById('finalGreeting');
+    const finalMessage = document.getElementById('finalMessage');
+    const finalSender = document.getElementById('finalSender');
+    const shareLinkEl = document.getElementById('shareLinkFinal');
+
+    const TARGET_SCORE = 8;
+    let currentScore = 0;
+    let dropInterval = 1000;
+    let gameTimer;
+
+    const heartEmoji = '❤️';
+    const flowerEmoji = '🌸';
+    
+    // --- 1. Инициализация и определение, какой экран показывать ---
+
     const urlParams = new URLSearchParams(window.location.search);
     const recipient = urlParams.get('recipient');
     const sender = urlParams.get('sender');
     const customMsgParam = urlParams.get('msg');
 
-    // --- ИСПРАВЛЕННАЯ ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ ---
     if (recipient && sender) {
         // Параметры найдены - запускаем игру
-        setupScreen.classList.add('hidden'); // СКРЫВАЕМ НАСТРОЙКИ
-        congratsScreen.classList.add('hidden'); // СКРЫВАЕМ ПОЗДРАВЛЕНИЕ (если оно было)
-        gameScreen.classList.remove('hidden'); // ПОКАЗЫВАЕМ ИГРУ
+        setupScreen.classList.add('hidden');
+        congratsScreen.classList.add('hidden');
+        gameScreen.classList.remove('hidden');
         initializeGame(recipient, sender, customMsgParam);
     } else {
-        // Параметров нет (первый запуск или чистая ссылка) - показываем форму настройки
-        setupScreen.classList.remove('hidden'); // ПОКАЗЫВАЕМ НАСТРОЙКИ
-        gameScreen.classList.add('hidden');    // СКРЫВАЕМ ИГРУ
+        // Параметров нет - показываем форму настройки
+        setupScreen.classList.remove('hidden');
+        gameScreen.classList.add('hidden');
         congratsScreen.classList.add('hidden');
         
         generateLinkBtn.addEventListener('click', generateLink);
     }
 
-    // --- ОСТАЛЬНЫЕ ФУНКЦИИ (generateLink, initializeGame, startGame и т.д.) остаются БЕЗ ИЗМЕНЕНИЙ ---
-
+    // --- 2. Генерация ссылки ---
+    
     function generateLink() {
-        // ... (Код генерации ссылки остается прежним) ...
         const recName = setupRecipientName.value.trim();
         const sendName = setupSenderName.value.trim();
         const customMsg = setupCustomMessage.value.trim();
@@ -51,29 +71,25 @@ document.addEventListener('DOMContentLoaded', () => {
             link += `&msg=${encodedMsg}`;
         }
         
-        // ВЫВОДИМ ССЫЛКУ ДЛЯ КОПИРОВАНИЯ
+        // Выводим ссылку для копирования
         linkOutput.classList.remove('hidden');
         shareLinkEl.href = link; 
         shareLinkEl.textContent = link;
-
-        // ПЕРЕНАПРАВЛЯЕМ НА ИГРУ С ПАРАМЕТРАМИ
-        // Это необходимо, чтобы сразу перейти к игровому экрану с заданными именами
+        
+        // Перенаправляем на игру с параметрами
         window.location.href = link;
     }
     
-    // ... (Остальной код initializeGame, startGame, createFallingItem, catchItem, checkWinCondition) ...
+    // --- 3. Игровая логика ---
 
     function initializeGame(recName, sendName, msgParam) {
-        // Обновляем заголовки
         gameRecipientTitle.textContent = `для ${recName}`;
         
-        // Устанавливаем финальный текст
         const finalMsgText = msgParam && msgParam.length > 0 ? msgParam : "С праздником весны! Желаю тебе счастья, здоровья и только ярких дней. Ты — самая лучшая! 🌸";
         finalMessage.textContent = finalMsgText;
         finalSender.textContent = sendName;
         finalGreeting.innerHTML = `С Днём 8 Марта, ${recName}!`;
         
-        // Устанавливаем ссылку для шаринга на конечном экране
         shareLinkEl.href = window.location.href;
         shareLinkEl.textContent = window.location.href;
 
@@ -114,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         item.dataset.caught = 'false';
 
         const fallDuration = 4 + Math.random() * 3;
+        // **ВАЖНОЕ ИЗМЕНЕНИЕ: УБРАЛИ item.classList.add('falling');**
         item.style.animation = `fall ${fallDuration}s linear forwards`;
 
         gameArea.appendChild(item);
