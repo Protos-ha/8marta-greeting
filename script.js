@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         generateLinkBtn.addEventListener('click', generateLink);
     }
 
-    // --- 2. Генерация ссылки (Исправлено: УДАЛЕНО ПЕРЕНАПРАВЛЕНИЕ) ---
+    // --- 2. Генерация ссылки (Без автоматического редиректа) ---
     
     function generateLink() {
         const recName = setupRecipientName.value.trim();
@@ -77,11 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
         shareLinkEl.href = link; 
         shareLinkEl.textContent = link;
         
-        // *** ГЛАВНОЕ ИЗМЕНЕНИЕ: Мы оставили только вывод ссылки, без window.location.href = link; ***
+        // ВАЖНО: Перенаправление убрано, чтобы пользователь мог скопировать ссылку.
     }
     
     // --- 3. Игровая логика ---
-    // (Остальные функции initializeGame, startGame, createFallingItem и т.д. остаются без изменений)
 
     function initializeGame(recName, sendName, msgParam) {
         gameRecipientTitle.textContent = `для ${recName}`;
@@ -94,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shareLinkEl.href = window.location.href;
         shareLinkEl.textContent = window.location.href;
 
+        // Запуск игры с задержкой для надежной отрисовки DOM
         requestAnimationFrame(() => {
              requestAnimationFrame(startGame); 
         });
