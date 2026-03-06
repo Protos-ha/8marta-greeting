@@ -1,15 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ... (Все объявления переменных остаются прежними) ...
+    // Элементы управления
     const setupScreen = document.getElementById('setup-screen');
     const gameScreen = document.getElementById('game-screen');
     const congratsScreen = document.getElementById('congratulations-screen');
     
+    // Элементы настройки
     const setupRecipientName = document.getElementById('recipientName');
     const setupSenderName = document.getElementById('senderName');
     const setupCustomMessage = document.getElementById('customMessage');
     const generateLinkBtn = document.getElementById('generateLinkBtn');
     const linkOutput = document.getElementById('linkOutput');
     
+    // Элементы игры и поздравления
     const gameRecipientTitle = document.getElementById('gameRecipientTitle');
     const finalGreeting = document.getElementById('finalGreeting');
     const finalMessage = document.getElementById('finalMessage');
@@ -31,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sender = urlParams.get('sender');
     const customMsgParam = urlParams.get('msg');
 
+    // --- Логика показа экрана ---
     if (recipient && sender) {
         // Параметры найдены - запускаем игру
         setupScreen.classList.add('hidden');
@@ -49,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 2. Генерация ссылки ---
     
     function generateLink() {
-        // ... (Код генерации остается прежним) ...
         const recName = setupRecipientName.value.trim();
         const sendName = setupSenderName.value.trim();
         const customMsg = setupCustomMessage.value.trim();
@@ -70,12 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
             link += `&msg=${encodedMsg}`;
         }
         
+        // Выводим ссылку для копирования
         linkOutput.classList.remove('hidden');
         shareLinkEl.href = link; 
         shareLinkEl.textContent = link;
         
-        // Перенаправляем на игру с параметрами
-        window.location.href = link;
+        // *** АВТОМАТИЧЕСКОЕ ПЕРЕНАПРАВЛЕНИЕ УДАЛЕНО ***
     }
     
     // --- 3. Игровая логика ---
@@ -91,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shareLinkEl.href = window.location.href;
         shareLinkEl.textContent = window.location.href;
 
-        // Запускаем игру после того, как браузер гарантированно рассчитал размеры DOM
+        // Запуск игры через requestAnimationFrame для надежного старта анимации
         requestAnimationFrame(() => {
              requestAnimationFrame(startGame); 
         });
@@ -105,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentScore = 0;
         updateScoreDisplay(scoreDisplay);
         
-        // Интервал запускается здесь, когда DOM готов
         gameTimer = setInterval(createFallingItem, dropInterval);
     }
 
@@ -120,9 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const gameArea = document.getElementById('game-area');
-        // *** ДОБАВЛЕНА ПРОВЕРКА ШИРИНЫ ***
+        
         if (gameArea.clientWidth === 0) {
-            // Если ширина нулевая (еще не отрисовали), пропускаем этот кадр
             return;
         }
         
@@ -159,9 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
-    // ... (catchItem и checkWinCondition остаются без изменений) ...
-    
+
     function catchItem(itemElement) {
         if (itemElement.dataset.caught === 'true') return;
 
