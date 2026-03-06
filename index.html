@@ -2,66 +2,31 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Поздравление для Маши!</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Секция настройки -->
-    <div id="setup-screen" class="hidden">
+    <div id="setup-screen">
         <h1>Настройка поздравления</h1>
-        
-        <div class="input-group">
-            <label for="recipientName">Имя получателя (например, Маша):</label>
-            <input type="text" id="recipientName" value="Маша">
-        </div>
-
-        <div class="input-group">
-            <label for="senderName">Ваше имя (отправитель):</label>
-            <input type="text" id="senderName" value="Дима">
-        </div>
-
-        <div class="input-group">
-            <label for="customMessage">Основное поздравление (оставить пустым для стандартного):</label>
-            <textarea id="customMessage" rows="3"></textarea>
-        </div>
-        
+        <label>Имя получателя: <input type="text" id="recipientName" value="Маша"></label><br>
+        <label>Ваше имя: <input type="text" id="senderName" value="Дима"></label><br>
         <button id="generateLinkBtn">Сгенерировать ссылку</button>
-        
-        <p id="linkOutput" class="hidden">
+        <p id="linkOutput" style="display:none;">
             Ваша ссылка: <a id="shareLink" href="#" target="_blank"></a>
         </p>
     </div>
 
-    <!-- Первый экран: Игра -->
     <div id="game-screen" class="hidden">
         <h1>Поймай 8 сердечек ❤️</h1>
-        <h2 id="gameRecipientTitle">для [Имя]</h2>
-        
-        <div class="counter-container">
-            <div id="score">0 / 8</div>
-        </div>
-        
-        <div id="game-area">
-        </div>
+        <h2 id="gameRecipientTitle"></h2>
+        <div id="score">0 / 8</div>
+        <div id="game-area"></div>
     </div>
 
-    <!-- Второй экран: Поздравление -->
     <div id="congratulations-screen" class="hidden">
-        <div class="flower-bouquet">
-            💐
-        </div>
-        <h1 id="finalGreeting">С Днём 8 Марта, [Имя]!</h1>
-        <p id="finalMessage">С праздником весны! Желаю тебе счастья, здоровья и только ярких дней. Ты — самая лучшая! 🌸</p>
-        <p class="signature">— <span id="finalSender">Дима</span></p>
-        
-        <div class="final-message">
-            🎉 Ты поймала все 8 сердечек! 🎉
-        </div>
-        <div id="shareLinkContainer" style="margin-top: 20px;">
-            Поделись этой игрой: <a id="shareLinkFinal" href="#" target="_blank">Ссылка</a>
-        </div>
+        <h1>С Днём 8 Марта, <span id="finalName"></span>!</h1>
+        <p>Ты поймала все сердечки! С праздником!</p>
     </div>
 
     <script src="script.js"></script>
