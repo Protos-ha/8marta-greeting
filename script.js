@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (recipient && sender) {
         document.getElementById('setup-screen').classList.add('hidden');
         document.getElementById('game-screen').classList.remove('hidden');
-        document.getElementById('gameRecipientTitle').textContent = "для " + recipient;
         startGame(recipient, sender, msg);
     } else {
         document.getElementById('generateLinkBtn').onclick = () => {
