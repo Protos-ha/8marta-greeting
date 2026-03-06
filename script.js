@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         generateLinkBtn.addEventListener('click', generateLink);
     }
 
-    // --- 2. Генерация ссылки (Без автоматического редиректа) ---
+    // --- 2. Генерация ссылки ---
     
     function generateLink() {
         const recName = setupRecipientName.value.trim();
@@ -77,7 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
         shareLinkEl.href = link; 
         shareLinkEl.textContent = link;
         
-        // ВАЖНО: Перенаправление убрано, чтобы пользователь мог скопировать ссылку.
+        // Перенаправляем на игру с параметрами, чтобы запустить игру сразу
+        window.location.href = link;
     }
     
     // --- 3. Игровая логика ---
@@ -93,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shareLinkEl.href = window.location.href;
         shareLinkEl.textContent = window.location.href;
 
-        // Запуск игры с задержкой для надежной отрисовки DOM
+        // Запускаем игру с задержкой, чтобы убедиться, что браузер отрисовал DOM
         requestAnimationFrame(() => {
              requestAnimationFrame(startGame); 
         });
@@ -122,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const gameArea = document.getElementById('game-area');
         
+        // *** Проверка ширины: если контейнер еще не отрисован (ширина 0), пропускаем кадр ***
         if (gameArea.clientWidth === 0) {
             return;
         }
@@ -139,6 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         item.dataset.caught = 'false';
 
         const fallDuration = 4 + Math.random() * 3;
+        // Задаем анимацию напрямую, без использования класса, чтобы избежать конфликтов
         item.style.animation = `fall ${fallDuration}s linear forwards`;
 
         gameArea.appendChild(item);
