@@ -16,12 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const m = document.getElementById('customMessage').value;
             const link = window.location.origin + window.location.pathname + 
                          `?recipient=${encodeURIComponent(r)}&sender=${encodeURIComponent(s)}&msg=${encodeURIComponent(m)}`;
-            
             const linkA = document.getElementById('shareLink');
             linkA.href = link; linkA.textContent = link;
             document.getElementById('linkOutput').style.display = 'block';
         };
-
         document.getElementById('copyBtn').onclick = () => {
             navigator.clipboard.writeText(document.getElementById('shareLink').href).then(() => alert("Ссылка скопирована!"));
         };
@@ -41,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = document.createElement('div');
             item.innerHTML = randomItem.icon;
             item.className = 'falling-item';
-            item.style.left = Math.random() * 90 + '%';
-            item.style.animation = 'fall 5s linear';
+            item.style.left = Math.random() * 95 + '%';
+            item.style.animation = 'fall 6s linear';
             area.appendChild(item);
             
             item.onclick = () => {
@@ -54,19 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.getElementById('game-screen').classList.add('hidden');
                         const c = document.getElementById('congratulations-screen');
                         c.classList.remove('hidden');
-                        c.classList.add('card');
                         document.getElementById('finalName').textContent = rec;
                         document.getElementById('finalMsgText').textContent = msg || "С праздником!";
                         document.getElementById('finalSender').textContent = sen;
                     }
                 } else {
-                    item.style.transition = "all 0.2s";
+                    item.style.transition = "all 0.3s";
                     item.style.transform = "scale(0.5) rotate(45deg)";
                     item.style.opacity = "0";
-                    setTimeout(() => item.remove(), 200);
+                    setTimeout(() => item.remove(), 300);
                 }
             };
-            setTimeout(() => item.remove(), 5000);
-        }, 500);
+            setTimeout(() => item.remove(), 6000);
+        }, 600);
     }
 });
