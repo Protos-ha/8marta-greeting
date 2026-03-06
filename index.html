@@ -7,10 +7,10 @@
 </head>
 <body>
 
-    <!-- Слой с игрой (полноэкранный) -->
+    <!-- Игровая зона (полный экран) -->
     <div id="game-area"></div>
 
-    <!-- Основной контент (карточки) -->
+    <!-- Настройки -->
     <div id="setup-screen" class="card">
         <h1>✨ Создать поздравление</h1>
         <input type="text" id="recipientName" placeholder="Имя получателя">
@@ -27,15 +27,15 @@
         </div>
     </div>
 
-    <div id="game-screen" class="hidden">
-        <div class="card">
-            <h1>Поймай 8 сердечек ❤️</h1>
-            <h2 id="gameRecipientTitle"></h2>
-            <div id="score">0 / 8</div>
-        </div>
+    <!-- Игровой экран -->
+    <div id="game-screen" class="hidden card">
+        <h1>Поймай 8 сердечек ❤️</h1>
+        <h2 id="gameRecipientTitle"></h2>
+        <div id="score">0 / 8</div>
     </div>
 
-    <div id="congratulations-screen" class="hidden" class="card">
+    <!-- Поздравление -->
+    <div id="congratulations-screen" class="hidden card">
         <h1>С Днём 8 Марта, <span id="finalName"></span>!</h1>
         <p id="finalMsgText" style="font-size: 1.5em;"></p>
         <p>— <span id="finalSender"></span></p>
