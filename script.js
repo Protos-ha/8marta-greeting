@@ -1,55 +1,76 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const setupScreen = document.getElementById('setup-screen');
-    const gameScreen = document.getElementById('game-screen');
-    const congratsScreen = document.getElementById('congratulations-screen');
-    
-    // Проверка параметров в URL
     const params = new URLSearchParams(window.location.search);
     const recipient = params.get('recipient');
     const sender = params.get('sender');
+    const msg = params.get('msg');
 
     if (recipient && sender) {
-        setupScreen.classList.add('hidden');
-        gameScreen.classList.remove('hidden');
+        document.getElementById('setup-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
         document.getElementById('gameRecipientTitle').textContent = "для " + recipient;
-        startGame();
+        startGame(recipient, sender, msg);
     } else {
         document.getElementById('generateLinkBtn').onclick = () => {
             const r = document.getElementById('recipientName').value;
             const s = document.getElementById('senderName').value;
-            const link = window.location.origin + window.location.pathname + `?recipient=${encodeURIComponent(r)}&sender=${encodeURIComponent(s)}`;
-            
-            const out = document.getElementById('linkOutput');
+            const m = document.getElementById('customMessage').value;
+            const link = window.location.origin + window.location.pathname + 
+                         `?recipient=${encodeURIComponent(r)}&sender=${encodeURIComponent(s)}&msg=${encodeURIComponent(m)}`;
             const linkA = document.getElementById('shareLink');
-            linkA.href = link;
-            linkA.textContent = link;
-            out.style.display = 'block';
+            linkA.href = link; linkA.textContent = link;
+            document.getElementById('linkOutput').style.display = 'block';
         };
     }
 
-    function startGame() {
+    function startGame(rec, sen, msg) {
         const area = document.getElementById('game-area');
         let score = 0;
+        
+        // Массив элементов: 1 сердце и 3 "отвлекающих" элемента
+        const items = [
+            { icon: '❤️', isHeart: true },
+            { icon: '🌸', isHeart: false },
+            { icon: '🌟', isHeart: false },
+            { icon: '🦋', isHeart: false }
+        ];
+
         setInterval(() => {
             if (score >= 8) return;
-            const heart = document.createElement('div');
-            heart.innerHTML = '❤️';
-            heart.className = 'falling-item';
-            heart.style.left = Math.random() * 80 + '%';
-            heart.style.animation = 'fall 5s linear';
-            area.appendChild(heart);
             
-            heart.onclick = () => {
-                score++;
-                document.getElementById('score').textContent = score + " / 8";
-                heart.remove();
-                if(score >= 8) {
-                    gameScreen.classList.add('hidden');
-                    congratsScreen.classList.remove('hidden');
-                    document.getElementById('finalName').textContent = recipient;
+            // Выбираем случайный элемент
+            const randomItem = items[Math.floor(Math.random() * items.length)];
+            
+            const item = document.createElement('div');
+            item.innerHTML = randomItem.icon;
+            item.className = 'falling-item';
+            item.style.left = Math.random() * 90 + '%';
+            item.style.animation = 'fall 5s linear';
+            area.appendChild(item);
+            
+            item.onclick = () => {
+                if (randomItem.isHeart) {
+                    score++;
+                    document.getElementById('score').textContent = score + " / 8";
+                    item.remove();
+                    
+                    if(score >= 8) {
+                        document.getElementById('game-screen').classList.add('hidden');
+                        const c = document.getElementById('congratulations-screen');
+                        c.classList.remove('hidden');
+                        c.classList.add('card');
+                        document.getElementById('finalName').textContent = rec;
+                        document.getElementById('finalMsgText').textContent = msg || "С праздником весны!";
+                        document.getElementById('finalSender').textContent = sen;
+                    }
+                } else {
+                    // Отвлекающий элемент: красиво исчезает
+                    item.style.transition = "all 0.2s";
+                    item.style.transform = "scale(0.5) rotate(45deg)";
+                    item.style.opacity = "0";
+                    setTimeout(() => item.remove(), 200);
                 }
             };
-            setTimeout(() => heart.remove(), 5000);
-        }, 1000);
+            setTimeout(() => item.remove(), 5000);
+        }, 500); // Летят чуть чаще
     }
 });
