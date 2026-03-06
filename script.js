@@ -1,50 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-    const recipient = params.get('recipient');
-    const sender = params.get('sender');
-    const msg = params.get('msg');
-
-    if (recipient && sender) {
-        document.getElementById('setup-screen').classList.add('hidden');
-        document.getElementById('game-screen').classList.remove('hidden');
-
-        startGame(recipient, sender, msg);
-    } else {
-        document.getElementById('generateLinkBtn').onclick = () => {
-            const r = document.getElementById('recipientName').value;
-            const s = document.getElementById('senderName').value;
-            const m = document.getElementById('customMessage').value;
-            const link = window.location.origin + window.location.pathname + 
-                         `?recipient=${encodeURIComponent(r)}&sender=${encodeURIComponent(s)}&msg=${encodeURIComponent(m)}`;
-            const linkA = document.getElementById('shareLink');
-            linkA.href = link; linkA.textContent = link;
-            document.getElementById('linkOutput').style.display = 'block';
-        };
-
-        document.getElementById('copyBtn').onclick = () => {
-            navigator.clipboard.writeText(document.getElementById('shareLink').href).then(() => alert("Ссылка скопирована!"));
-        };
-    }
-
-    function startGame(rec, sen, msg) {
-        const area = document.getElementById('game-area');
-        let score = 0;
-        const items = [
-            { icon: '❤️', isHeart: true }, { icon: '🌸', isHeart: false },
-            { icon: '🌟', isHeart: false }, { icon: '🦋', isHeart: false }
-        ];
-
-        setInterval(() => {
-            if (score >= 8) return;
-            const randomItem = items[Math.floor(Math.random() * items.length)];
-            const item = document.createElement('div');
-            item.innerHTML = randomItem.icon;
-            item.className = 'falling-item';
-            item.style.left = Math.random() * 95 + '%';
-            item.style.animation = 'fall 6s linear';
-            area.appendChild(item);
+// Внутри функции startGame в script.js:
             
-            item.onclick = () => {
+            // ... (создание item) ...
+            
+            // Функция обработки клика/касания
+            const handleHit = (e) => {
+                e.preventDefault(); // Предотвращаем дублирование клика
                 if (randomItem.isHeart) {
                     score++;
                     document.getElementById('score').textContent = score + " / 8";
@@ -64,7 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => item.remove(), 300);
                 }
             };
-            setTimeout(() => item.remove(), 6000);
-        }, 500);
-    }
-});
+
+            // Добавляем оба события для надежности
+            item.addEventListener('touchstart', handleHit, {passive: false});
+            item.addEventListener('click', handleHit);
+
+            area.appendChild(item);
+            // ... (остальной код)
