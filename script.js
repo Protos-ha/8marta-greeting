@@ -23,8 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         document.getElementById('copyBtn').onclick = () => {
-            const link = document.getElementById('shareLink').href;
-            navigator.clipboard.writeText(link).then(() => alert("Ссылка скопирована!"));
+            navigator.clipboard.writeText(document.getElementById('shareLink').href).then(() => alert("Ссылка скопирована!"));
         };
     }
 
