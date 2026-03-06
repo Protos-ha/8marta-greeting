@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Элементы настройки
     const setupRecipientName = document.getElementById('recipientName');
     const setupSenderName = document.getElementById('senderName');
-    const setupCustomMessage = document.getElementById('customMessage');
+    const setupCustomMessage = document.getElementById('setupCustomMessage');
     const generateLinkBtn = document.getElementById('generateLinkBtn');
     const linkOutput = document.getElementById('linkOutput');
     
@@ -33,15 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const sender = urlParams.get('sender');
     const customMsgParam = urlParams.get('msg');
 
-    // --- Логика показа экрана ---
     if (recipient && sender) {
-        // Параметры найдены - запускаем игру
+        // Параметры найдены -> ИГРА
         setupScreen.classList.add('hidden');
         congratsScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
         initializeGame(recipient, sender, customMsgParam);
     } else {
-        // Параметров нет - показываем форму настройки
+        // Параметров нет -> НАСТРОЙКА
         setupScreen.classList.remove('hidden');
         gameScreen.classList.add('hidden');
         congratsScreen.classList.add('hidden');
@@ -77,15 +76,14 @@ document.addEventListener('DOMContentLoaded', () => {
         shareLinkEl.href = link; 
         shareLinkEl.textContent = link;
         
-        // Перенаправляем на игру с параметрами, чтобы запустить игру сразу
-        window.location.href = link;
+        // **ЗДЕСЬ НЕТ ПЕРЕНАПРАВЛЕНИЯ. СТРАНИЦА НЕ ПЕРЕЗАГРУЖАЕТСЯ.**
     }
     
     // --- 3. Игровая логика ---
 
     function initializeGame(recName, sendName, msgParam) {
+        // ... (Инициализация текста) ...
         gameRecipientTitle.textContent = `для ${recName}`;
-        
         const finalMsgText = msgParam && msgParam.length > 0 ? msgParam : "С праздником весны! Желаю тебе счастья, здоровья и только ярких дней. Ты — самая лучшая! 🌸";
         finalMessage.textContent = finalMsgText;
         finalSender.textContent = sendName;
@@ -94,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         shareLinkEl.href = window.location.href;
         shareLinkEl.textContent = window.location.href;
 
-        // Запускаем игру с задержкой, чтобы убедиться, что браузер отрисовал DOM
         requestAnimationFrame(() => {
              requestAnimationFrame(startGame); 
         });
@@ -123,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const gameArea = document.getElementById('game-area');
         
-        // *** Проверка ширины: если контейнер еще не отрисован (ширина 0), пропускаем кадр ***
         if (gameArea.clientWidth === 0) {
             return;
         }
@@ -141,7 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
         item.dataset.caught = 'false';
 
         const fallDuration = 4 + Math.random() * 3;
-        // Задаем анимацию напрямую, без использования класса, чтобы избежать конфликтов
         item.style.animation = `fall ${fallDuration}s linear forwards`;
 
         gameArea.appendChild(item);
