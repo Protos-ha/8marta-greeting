@@ -8,8 +8,8 @@
 </head>
 <body>
 
-    <!-- Секция настройки: УДАЛЕН КЛАСС "hidden" -->
-    <div id="setup-screen">
+    <!-- Секция настройки: НЕ ДОЛЖЕН ИМЕТЬ КЛАСС "hidden" ПРИ ПЕРВОМ ЗАПУСКЕ -->
+    <div id="setup-screen"> 
         <h1>Настройка поздравления</h1>
         
         <div class="input-group">
@@ -34,7 +34,7 @@
         </p>
     </div>
 
-    <!-- Первый экран: Игра -->
+    <!-- Первый экран: Игра (Должен быть скрыт) -->
     <div id="game-screen" class="hidden">
         <h1>Поймай 8 сердечек ❤️</h1>
         <h2 id="gameRecipientTitle">для [Имя]</h2>
@@ -49,7 +49,6 @@
 
     <!-- Второй экран: Поздравление -->
     <div id="congratulations-screen" class="hidden">
-        <!-- ... (Остается без изменений) ... -->
         <div class="flower-bouquet">
             💐
         </div>
