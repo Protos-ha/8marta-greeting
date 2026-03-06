@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             linkA.href = link; linkA.textContent = link;
             document.getElementById('linkOutput').style.display = 'block';
         };
+
         document.getElementById('copyBtn').onclick = () => {
             navigator.clipboard.writeText(document.getElementById('shareLink').href).then(() => alert("Ссылка скопирована!"));
         };
@@ -64,6 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
             setTimeout(() => item.remove(), 6000);
-        }, 600);
+        }, 500);
     }
 });
