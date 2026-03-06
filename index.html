@@ -2,19 +2,21 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Поздравление для Маши!</title>
+    <title>Игра-поздравление</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="setup-screen">
-        <h1>Настройка поздравления</h1>
-        <label>Имя получателя: <input type="text" id="recipientName" value="Маша"></label><br>
-        <label>Ваше имя: <input type="text" id="senderName" value="Дима"></label><br>
+    <div id="setup-screen" class="card">
+        <h1>✨ Создать поздравление</h1>
+        <input type="text" id="recipientName" placeholder="Имя получателя">
+        <input type="text" id="senderName" placeholder="Ваше имя">
+        <textarea id="customMessage" placeholder="Напишите свое поздравление..."></textarea>
         <button id="generateLinkBtn">Сгенерировать ссылку</button>
-        <p id="linkOutput" style="display:none;">
-            Ваша ссылка: <a id="shareLink" href="#" target="_blank"></a>
-        </p>
+        <div id="linkOutput" style="display:none; margin-top:20px;">
+            <p>Ваша ссылка:</p>
+            <a id="shareLink" href="#" target="_blank"></a>
+        </div>
     </div>
 
     <div id="game-screen" class="hidden">
@@ -24,9 +26,10 @@
         <div id="game-area"></div>
     </div>
 
-    <div id="congratulations-screen" class="hidden">
+    <div id="congratulations-screen" class="hidden" class="card">
         <h1>С Днём 8 Марта, <span id="finalName"></span>!</h1>
-        <p>Ты поймала все сердечки! С праздником!</p>
+        <p id="finalMsgText" style="font-size: 1.5em;"></p>
+        <p">— <span id="finalSender"></span></p>
     </div>
 
     <script src="script.js"></script>
