@@ -1,6 +1,10 @@
-body { background-color: #fce4ec; font-family: sans-serif; text-align: center; }
-#setup-screen { background: white; padding: 20px; border-radius: 15px; display: inline-block; margin-top: 50px; }
+body { background-color: #fce4ec; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; margin: 0; }
+.card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 500px; text-align: center; }
+input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #f8bbd0; border-radius: 10px; box-sizing: border-box; }
+button { background: #d81b60; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+button:hover { background: #ad1457; }
 .hidden { display: none !important; }
-#game-area { position: relative; width: 100%; height: 500px; background: transparent; overflow: hidden; cursor: crosshair; }
+#game-area { position: relative; width: 100%; height: 400px; overflow: hidden; cursor: crosshair; }
 .falling-item { position: absolute; font-size: 30px; cursor: pointer; user-select: none; }
-@keyframes fall { from { transform: translateY(-50px); } to { transform: translateY(500px); } }
+#score { font-size: 24px; font-weight: bold; color: #d81b60; margin-bottom: 10px; }
+@keyframes fall { from { transform: translateY(-50px); } to { transform: translateY(400px); } }
