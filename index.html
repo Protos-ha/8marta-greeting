@@ -7,6 +7,10 @@
 </head>
 <body>
 
+    <!-- Слой с игрой (полноэкранный) -->
+    <div id="game-area"></div>
+
+    <!-- Основной контент (карточки) -->
     <div id="setup-screen" class="card">
         <h1>✨ Создать поздравление</h1>
         <input type="text" id="recipientName" placeholder="Имя получателя">
@@ -15,7 +19,7 @@
         <button id="generateLinkBtn">Сгенерировать ссылку</button>
         
         <div id="linkOutput" style="display:none; margin-top:25px;">
-            <p style="font-weight: bold; color: #d81b60;">Ваша ссылка готова:</p>
+            <p style="font-weight: bold; color: #d81b60;">Ваша ссылка:</p>
             <div class="link-box">
                 <a id="shareLink" href="#" target="_blank"></a>
             </div>
@@ -24,10 +28,11 @@
     </div>
 
     <div id="game-screen" class="hidden">
-        <h1>Поймай 8 сердечек ❤️</h1>
-        <h2 id="gameRecipientTitle"></h2>
-        <div id="score">0 / 8</div>
-        <div id="game-area"></div>
+        <div class="card">
+            <h1>Поймай 8 сердечек ❤️</h1>
+            <h2 id="gameRecipientTitle"></h2>
+            <div id="score">0 / 8</div>
+        </div>
     </div>
 
     <div id="congratulations-screen" class="hidden" class="card">
