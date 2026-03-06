@@ -16,30 +16,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const m = document.getElementById('customMessage').value;
             const link = window.location.origin + window.location.pathname + 
                          `?recipient=${encodeURIComponent(r)}&sender=${encodeURIComponent(s)}&msg=${encodeURIComponent(m)}`;
+            
             const linkA = document.getElementById('shareLink');
             linkA.href = link; linkA.textContent = link;
             document.getElementById('linkOutput').style.display = 'block';
+        };
+
+        document.getElementById('copyBtn').onclick = () => {
+            const link = document.getElementById('shareLink').href;
+            navigator.clipboard.writeText(link).then(() => alert("Ссылка скопирована!"));
         };
     }
 
     function startGame(rec, sen, msg) {
         const area = document.getElementById('game-area');
         let score = 0;
-        
-        // Массив элементов: 1 сердце и 3 "отвлекающих" элемента
         const items = [
-            { icon: '❤️', isHeart: true },
-            { icon: '🌸', isHeart: false },
-            { icon: '🌟', isHeart: false },
-            { icon: '🦋', isHeart: false }
+            { icon: '❤️', isHeart: true }, { icon: '🌸', isHeart: false },
+            { icon: '🌟', isHeart: false }, { icon: '🦋', isHeart: false }
         ];
 
         setInterval(() => {
             if (score >= 8) return;
-            
-            // Выбираем случайный элемент
             const randomItem = items[Math.floor(Math.random() * items.length)];
-            
             const item = document.createElement('div');
             item.innerHTML = randomItem.icon;
             item.className = 'falling-item';
@@ -52,18 +51,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     score++;
                     document.getElementById('score').textContent = score + " / 8";
                     item.remove();
-                    
                     if(score >= 8) {
                         document.getElementById('game-screen').classList.add('hidden');
                         const c = document.getElementById('congratulations-screen');
                         c.classList.remove('hidden');
                         c.classList.add('card');
                         document.getElementById('finalName').textContent = rec;
-                        document.getElementById('finalMsgText').textContent = msg || "С праздником весны!";
+                        document.getElementById('finalMsgText').textContent = msg || "С праздником!";
                         document.getElementById('finalSender').textContent = sen;
                     }
                 } else {
-                    // Отвлекающий элемент: красиво исчезает
                     item.style.transition = "all 0.2s";
                     item.style.transform = "scale(0.5) rotate(45deg)";
                     item.style.opacity = "0";
@@ -71,6 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
             setTimeout(() => item.remove(), 5000);
-        }, 500); // Летят чуть чаще
+        }, 500);
     }
 });
